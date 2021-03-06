@@ -26,11 +26,11 @@ lazy_static! {
     pub static ref PHI: AtomOrSeq<'static> = Seq(vec![]);
 }
 
-pub fn from_bool(x: bool) -> &'static AtomOrSeq<'static> {
+pub fn from_bool(x: bool) -> AtomOrSeq<'static> {
     if x {
-        &TRUE
+        TRUE.clone()
     } else {
-        &FALSE
+        FALSE.clone()
     }
 }
 

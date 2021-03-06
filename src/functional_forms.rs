@@ -35,33 +35,47 @@ pub fn construct_usize(fs: Vec<Box<dyn Fn(usize) -> usize>>) -> Box<dyn Fn(usize
 }
 
 
-// pub fn construct(
-//     fs: Vec<Option<&'static dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>>>) 
-//         -> Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>> {
-//     Box::new(move |x| {
-//         let fxs: Vec<Option<AtomOrSeq>> = fs.iter().map(|f| match f {
-//             Some(f) => f(x.clone()),
-//             _ => None,
-//         }).collect();
-// 
-//         dbg!(&fxs);
-// 
-//         if fxs.iter().all(|x| x.is_some()) {
-//             Some(PHI.clone())
-//         } else {
-//             None
-//         }
-//     })
-//         
-// }
+#[allow(dead_code)]
+pub fn construct_bad(
+    fs: Vec<Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>>>) 
+        -> Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>> {
+    Box::new(move |x| {
+        Some(Seq(fs.iter().map(|f| f(x.clone()).unwrap()).collect()))
+    })
+}
 
-// pub fn construct_2(f: Box<dyn Fn(usize) -> usize>, g: Box<dyn Fn(usize) -> usize>) -> Box<dyn Fn(usize) -> Vec<usize>>
-//     Box::new(move |x| {
-//         let v = vec![f(x.clone()), g(x.clone())];
-//         if v.iter().all(|x| x.is_some()) {
-//             Some(Seq(v.into_iter().map(|x| x.unwrap()).collect()))
-//         } else {
-//             None
-//         }
-//     })
-// }
+#[allow(dead_code)]
+pub fn construct_unsafe(
+    fs: Vec<Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>>>) 
+        -> Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>> {
+
+    Box::new(move |x| {
+        let v: Vec<Option<AtomOrSeq>> = fs.iter().map(|f| f(x.clone())).collect();
+        if v.iter().all(|x| x.is_some()) {
+            Some(Seq(v.into_iter().map(|x| x.unwrap()).collect()))
+        } else {
+            None
+        }
+    })
+}
+
+#[allow(dead_code)]
+pub fn construct(
+    fs: Vec<Option<Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>>>>) 
+        -> Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>> {
+    if fs.iter().all(|f| f.is_some()) {
+        let fs: Vec<Box<dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>>> 
+            = fs.into_iter().map(|x| x.unwrap()).collect();
+        Box::new(move |x| {
+            let v: Vec<Option<AtomOrSeq>> = fs.iter().map(|f| f(x.clone())).collect();
+            if v.iter().all(|x| x.is_some()) {
+                Some(Seq(v.into_iter().map(|x| x.unwrap()).collect()))
+            } else {
+                None
+            }
+        })
+    } else {
+        Box::new(|x| None)
+    }
+}
+
