@@ -1,12 +1,21 @@
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq;
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq::Atom;
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq::Seq;
+#[allow(unused_imports)]
 use crate::sets::FALSE;
+#[allow(unused_imports)]
 use crate::sets::TRUE;
+#[allow(unused_imports)]
 use crate::sets::PHI;
 
+#[allow(unused_imports)]
 use crate::bool_fns::and;
+#[allow(unused_imports)]
 use crate::bool_fns::or;
+#[allow(unused_imports)]
 use crate::bool_fns::eq;
 
 #[test]

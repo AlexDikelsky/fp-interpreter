@@ -1,20 +1,30 @@
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq;
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq::Atom;
+#[allow(unused_imports)]
 use crate::sets::AtomOrSeq::Seq;
+#[allow(unused_imports)]
 use crate::sets::FALSE;
+#[allow(unused_imports)]
 use crate::sets::TRUE;
+#[allow(unused_imports)]
 use crate::sets::from_bool;
+#[allow(unused_imports)]
 use itertools::zip_eq;
 
 
+#[allow(dead_code)]
 pub fn and<'a>(x: Option<AtomOrSeq>) -> Option<&'a AtomOrSeq> {
     bool_fn(x, Box::new(|x, y| x && y))
 }
 
+#[allow(dead_code)]
 pub fn or<'a>(x: Option<AtomOrSeq>) -> Option<&'a AtomOrSeq> {
     bool_fn(x, Box::new(|x, y| x || y))
 }
 
+#[allow(dead_code)]
 fn bool_fn<'a>(x: Option<AtomOrSeq>, f: Box<Fn(bool, bool) -> bool>) -> Option<&'a AtomOrSeq> {
     match x {
         Some(x) => match x {
@@ -31,6 +41,8 @@ fn bool_fn<'a>(x: Option<AtomOrSeq>, f: Box<Fn(bool, bool) -> bool>) -> Option<&
     }
 }
 
+// Should be using a find rather than a fold here so that it short circuts
+#[allow(dead_code)]
 pub fn eq<'a>(x: Option<AtomOrSeq>) -> Option<&'a AtomOrSeq> {
     match x {
         Some(x) => match x {

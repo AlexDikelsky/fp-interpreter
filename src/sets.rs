@@ -1,6 +1,7 @@
 use crate::sets::AtomOrSeq::Atom;
 use crate::sets::AtomOrSeq::Seq;
 
+pub type FunctionalForm = dyn Fn(Option<AtomOrSeq>) -> Option<AtomOrSeq>;
 
 #[derive(Debug)]
 pub enum Set<'a> {
